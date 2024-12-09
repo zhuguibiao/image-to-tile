@@ -6,5 +6,5 @@ export default defineConfig({
   worker: {
     format: "es",
   },
-  base:'image-to-tile'
+  base:'/image-to-tile'
 });
