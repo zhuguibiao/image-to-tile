@@ -44,7 +44,11 @@ const App: React.FC = () => {
     const link = document.createElement("a");
     const url = URL.createObjectURL(zipRef.current as Blob);
     link.href = url;
-    link.download = "tiles.zip";
+    let name = `tiles.zip`;
+    if (fileRef.current?.files?.[0]) {
+      name = fileRef.current?.files[0].name.split(".")[0];
+    }
+    link.download = name;
     link.click();
     URL.revokeObjectURL(url);
   };
