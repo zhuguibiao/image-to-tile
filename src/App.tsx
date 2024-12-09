@@ -52,7 +52,7 @@ const App: React.FC = () => {
   return (
     <div className="App">
       <h1>image-to-tile demo</h1>
-      <div style={{ display: "flex" }}>
+      <div className="opt">
         <input
           type="file"
           id="imageInput"
