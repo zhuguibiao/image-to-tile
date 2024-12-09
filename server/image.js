@@ -1,5 +1,4 @@
-const sharp = require("sharp");
-
+import sharp from 'sharp'
 // 创建一个 8000x8000 的图片
 const width = 12800;
 const height = 12800;
@@ -36,7 +35,7 @@ for (let y = 0; y < height; y++) {
 
 // 使用 sharp 处理图像数据
 sharp(buffer, { raw: { width, height, channels: 3 } }).toFile(
-  "8000x8000_pattern_grid_image.png",
+  `${width}-${height}.png`,
   (err, info) => {
     if (err) {
       console.error("Error creating image:", err);

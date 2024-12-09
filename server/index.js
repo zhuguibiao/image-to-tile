@@ -1,11 +1,12 @@
-const sharp = require("sharp");
-const express = require("express");
-const fs = require("fs");
+import sharp from "sharp";
+import express from "express";
+import fs from "fs";
 
 const PORT = 8080;
 
 const tile_opt = {
   layout: "google",
+  skipBlanks: 5,
   background: { r: 0, g: 0, b: 0, alpha: 0 },
 };
 
@@ -18,7 +19,9 @@ const getCallback = (req, res) => {
     return;
   }
   const file_name = get_file_name(original_name);
-  const image = sharp(`files/input/${original_name}`, { limitInputPixels: 0 });
+  const image = sharp(`files/input/${original_name}`, {
+    limitInputPixels: 0,
+  });
 
   const writeFile = (err, info) => {
     fs.writeFile(
@@ -48,7 +51,7 @@ const getCallback = (req, res) => {
 
 const app = express();
 
-app.use(express.static('./files/output'))
+app.use(express.static("./files/output"));
 
 app.get("/original_image", getCallback);
 
