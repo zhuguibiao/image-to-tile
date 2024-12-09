@@ -1,12 +1,13 @@
 {
-  "name": "vite-jszip-demo",
+  "name": "image-tp-tile",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
+  "homepage": "https://zhuguibiao.github.io/image-to-tile/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "doc": "gh-pages -d ./dist"
+    "docs": "gh-pages -d ./dist"
   },
   "dependencies": {
     "express": "^4.21.2",

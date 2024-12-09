@@ -1,50 +1,19 @@
-# React + TypeScript + Vite
+# image-to-tile
+	超大分辨率图片，输出瓦片图并提供瓦片图web服务。
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## demo
+  [demo](https://zhuguibiao.github.io/image-to-tile/)
 
-Currently, two official plugins are available:
+## why
+	超大分辨率图片在客户端展示，性能压力，借由大多数地图类应用的瓦片图处理方式。
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## use
+```shell
+	npm install 
+	node server/index.js 	 // 不要关
 
-## Expanding the ESLint configuration
+	浏览器访问或者GET请求 http://localhost:8080/original_image?file_name=2222.jpg
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+	然后新开一个shell启动web预览
+	npm start
 ```
