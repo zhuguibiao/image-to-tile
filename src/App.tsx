@@ -6,6 +6,7 @@ import * as L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import CustomTileLayer from "./CustomTileLayer";
 import Caption from "./Caption";
+const worker = new workerPath();
 
 const App: React.FC = () => {
   const [tiles, setTiles] = useState<Tiles>([]);
@@ -15,15 +16,19 @@ const App: React.FC = () => {
   const fileRef = useRef<HTMLInputElement | null>(null);
   const zipRef = useRef<Blob | null>(null);
 
+  const clear = () => {
+    zipRef.current = null;
+  };
   const toTile = () => {
     if (!fileRef.current?.files?.length) {
       return;
     }
+    clear();
     const file = fileRef.current!.files[0];
     setLoading(true);
     if (file) {
       const url = URL.createObjectURL(file);
-      const worker = new workerPath();
+
       worker.postMessage({ file: url });
       worker.onmessage = function (e) {
         const { tileData, zip } = e.data;

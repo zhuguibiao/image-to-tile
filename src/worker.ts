@@ -6,24 +6,31 @@ const zip = new JSZip();
 self.onmessage = async function (e: MessageEvent) {
   const { file }: { file: string } = e.data;
   const tiles: Tiles = [];
-
+  zip.remove("tiles/");
   if (file) {
     try {
       const tileSize = 256;
       // 获取并从文件创建图像位图
       const response = await fetch(file);
-      const blob = await response.blob();
-      const bitmap = await createImageBitmap(blob);
+      let blob: Blob | null = await response.blob();
+      let bitmap: ImageBitmap | null = await createImageBitmap(blob);
       const imageWidth = bitmap.width;
       const imageHeight = bitmap.height;
 
       console.log(bitmap);
-      const offscreenCanvas = new OffscreenCanvas(imageWidth, imageHeight);
-      const ctx = offscreenCanvas.getContext("2d");
+      let offscreenCanvas: OffscreenCanvas | null = new OffscreenCanvas(
+        imageWidth,
+        imageHeight
+      );
+
+      let ctx = offscreenCanvas?.getContext("2d");
       ctx?.drawImage(bitmap, 0, 0);
 
-      const tileCanvas = new OffscreenCanvas(tileSize, tileSize);
-      const tileCtx = tileCanvas.getContext("2d");
+      let tileCanvas: OffscreenCanvas | null = new OffscreenCanvas(
+        tileSize,
+        tileSize
+      );
+      let tileCtx = tileCanvas.getContext("2d");
 
       const maxZoomLevel = Math.ceil(
         Math.log2(Math.max(imageWidth, imageHeight) / tileSize)
@@ -55,10 +62,11 @@ self.onmessage = async function (e: MessageEvent) {
             if (!tiles[zx]) tiles[zx] = [];
             if (!tiles[zx][x]) tiles[zx][x] = [];
 
-            const buffer = await tileCanvas.convertToBlob();
+            let buffer: Blob | null = await tileCanvas.convertToBlob();
             zip.folder(`tiles/${zx}/${x}/`)?.file(`${y}.png`, buffer);
 
             const url = URL.createObjectURL(buffer);
+            buffer = null;
             if (url) {
               tiles[zx][x][y] = url;
             }
@@ -70,7 +78,23 @@ self.onmessage = async function (e: MessageEvent) {
         self.postMessage({ zip: content, tileData: tiles });
       });
 
+      // clear
       URL.revokeObjectURL(file);
+      
+      blob = null;
+
+      bitmap.close?.();
+      bitmap = null;
+
+      offscreenCanvas.width = offscreenCanvas.height = 0;
+      offscreenCanvas = null;
+
+      tileCanvas.width = tileCanvas.height = 0;
+      tileCanvas = null;
+
+      ctx = null;
+      tileCtx = null;
+
     } catch (error) {
       console.error("Worker 错误:", error);
     }
