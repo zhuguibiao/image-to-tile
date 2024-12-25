@@ -1,5 +1,6 @@
 # image-to-tile
 Ultra-large resolution images, online tile output
+
 English | [简体中文](./README.zh-CN.md)
 
 ## demo
@@ -13,7 +14,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## use
 - Browser：
-  - Visit online[demo](https://zhuguibiao.github.io/image-to-tile/)，Upload pictures, generate tiles, and download zip with one click
+  - Visit online [demo](https://zhuguibiao.github.io/image-to-tile/)，Upload pictures, generate tiles, and download zip with one click
   - Large images can be generated for testing using node server/image.js
   - Note：This method is primarily drawn using canvas. If the image's width and height exceed the browser's drawing limits, the generation may fail. You can use the following methods to generate it
 - node
