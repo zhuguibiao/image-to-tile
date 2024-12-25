@@ -72,16 +72,16 @@ const App: React.FC = () => {
           }}
         />
         <button onClick={toTile} disabled={loading}>
-          生成瓦片图
+          to tile images
         </button>
         {loading && (
           <div style={{ width: 120 }}>
-            正在生成中<span className="dots"></span>
+            Generating<span className="dots"></span>
           </div>
         )}
         {showZip && (
           <button onClick={dowloadZip} style={{ marginLeft: 20 }}>
-            下载生成的瓦片图（ZIP）
+            dowload tiles（ZIP）
           </button>
         )}
       </div>
