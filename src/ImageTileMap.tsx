@@ -202,7 +202,13 @@ function createDebugLayer(
     const coord = rc.project(e.latlng);
     L.marker(e.latlng)
       .addTo(layer)
-      .bindPopup(`[${Math.floor(coord.x)}, ${Math.floor(coord.y)}]`)
+      .bindPopup(
+        `
+          map: ${e.latlng}
+          <br />
+          img: ${coord}
+        `
+      )
       .openPopup();
   };
 

@@ -54,7 +54,7 @@ export default function App() {
     <>
       <Header />
       <div className="min-h-screen bg-background p-6">
-        <div className="mx-auto max-w-6xl space-y-6">
+        <div className="mx-auto max-w-6xl space-y-4">
           <Card className="p-4">
             <CardContent className="p-0">
               <div className="flex flex-wrap items-center">
@@ -99,6 +99,9 @@ export default function App() {
             </CardContent>
           </Card>
 
+          <div>
+            {t('image_info')}: {imageSize[0]} x {imageSize[1]}
+          </div>
           <Card className="overflow-hidden p-0">
             <CardContent className="p-0">
               <div className="h-[600px] w-full">
