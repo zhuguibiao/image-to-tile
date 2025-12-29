@@ -16,8 +16,12 @@ import Guide from "./components/guide";
 
 const DEMO_IMAGES = [
   {
-    name: "塞尔达地图",
-    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/map.png",
+    name: "塞尔达地图1",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/game1.png",
+  },
+  {
+    name: "塞尔达地图2",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/game2.png",
   },
   {
     name: "世界地图",
@@ -55,17 +59,11 @@ export default function App() {
             <CardContent className="p-0">
               <div className="flex flex-wrap items-center">
                 <div className="flex flex-wrap gap-3 items-center flex-1">
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
-                    className="max-w-2xs"
-                  />
                   <Select onValueChange={sendDemo}>
-                    <SelectTrigger className="w-[200px]">
+                    <SelectTrigger className="w-[200px] ">
                       <SelectValue placeholder={t("select_demo")} />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="z-[9999]">
                       {DEMO_IMAGES.map((img) => (
                         <SelectItem key={img.url} value={img.url}>
                           {img.name}
@@ -73,6 +71,13 @@ export default function App() {
                       ))}
                     </SelectContent>
                   </Select>
+
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                    className="max-w-2xs"
+                  />
 
                   <Button onClick={generateTiles} disabled={loading}>
                     {t("generate")}
