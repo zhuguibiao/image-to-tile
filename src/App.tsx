@@ -100,7 +100,7 @@ export default function App() {
           </Card>
 
           <div>
-            {t('image_info')}: {imageSize[0]} x {imageSize[1]}
+            {t('image_info')}: {imageSize?.[0]} x {imageSize?.[1]}
           </div>
           <Card className="overflow-hidden p-0">
             <CardContent className="p-0">
