@@ -17,11 +17,11 @@ import Guide from "./components/guide";
 const DEMO_IMAGES = [
   {
     name: "塞尔达地图",
-    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/public/map.png",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/map.png",
   },
   {
     name: "世界地图",
-    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/public/map.jpeg",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/map.jpeg",
   },
   {
     name: "风景图",
