@@ -1,5 +1,5 @@
 import JSZip from "jszip";
-import type { Tiles } from "./CustomTileLayer";
+import type { Tiles } from "./ImageTileMap";
 
 const zip = new JSZip();
 
@@ -75,12 +75,16 @@ self.onmessage = async function (e: MessageEvent) {
       }
 
       zip.generateAsync({ type: "blob" }).then(function (content) {
-        self.postMessage({ zip: content, tileData: tiles });
+        self.postMessage({
+          zip: content,
+          tileData: tiles,
+          imageSize: [imageWidth, imageHeight],
+        });
       });
 
       // clear
       URL.revokeObjectURL(file);
-      
+
       blob = null;
 
       bitmap.close?.();
@@ -94,9 +98,9 @@ self.onmessage = async function (e: MessageEvent) {
 
       ctx = null;
       tileCtx = null;
-
     } catch (error) {
-      console.error("Worker 错误:", error);
+      // console.error("Worker 错误:", error);
+      self.postMessage({ error: error});
     }
   }
 };

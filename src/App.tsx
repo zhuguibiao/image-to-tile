@@ -1,96 +1,108 @@
-import React, { useRef, useState } from "react";
-import workerPath from "./worker?worker";
-import { MapContainer } from "react-leaflet";
-import type { Tiles } from "./CustomTileLayer";
-import * as L from "leaflet";
-import "leaflet/dist/leaflet.css";
-import CustomTileLayer from "./CustomTileLayer";
-import Caption from "./Caption";
-const worker = new workerPath();
+import { useTileStore } from "./store/useTileStore";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import ImageTileMap from "./ImageTileMap";
+import Header from "@/components/header";
+import { useI18n } from "./components/i18n-provider";
+import Guide from "./components/guide";
 
-const App: React.FC = () => {
-  const [tiles, setTiles] = useState<Tiles>([]);
-  const [showZip, setShowZip] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(false);
+const DEMO_IMAGES = [
+  {
+    name: "塞尔达地图",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/public/map.png",
+  },
+  {
+    name: "世界地图",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/public/map.jpeg",
+  },
+  {
+    name: "风景图",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/1111.jpg",
+  },
+  {
+    name: "梅花图",
+    url: "https://raw.githubusercontent.com/zhuguibiao/image-to-tile/refs/heads/main/files/input/2222.jpg",
+  },
+];
 
-  const fileRef = useRef<HTMLInputElement | null>(null);
-  const zipRef = useRef<Blob | null>(null);
-
-  const clear = () => {
-    zipRef.current = null;
-  };
-  const toTile = () => {
-    if (!fileRef.current?.files?.length) {
-      return;
-    }
-    clear();
-    const file = fileRef.current!.files[0];
-    setLoading(true);
-    if (file) {
-      const url = URL.createObjectURL(file);
-
-      worker.postMessage({ file: url });
-      worker.onmessage = function (e) {
-        const { tileData, zip } = e.data;
-        console.log("Received data:", e.data);
-        if (zip) {
-          zipRef.current = zip;
-          setShowZip(true);
-        }
-        if (tileData) {
-          setTiles(tileData);
-          setLoading(false);
-        }
-      };
-    }
-  };
-
-  const dowloadZip = () => {
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(zipRef.current as Blob);
-    link.href = url;
-    let name = `tiles.zip`;
-    if (fileRef.current?.files?.[0]) {
-      name = fileRef.current?.files[0].name.split(".")[0];
-    }
-    link.download = name;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+export default function App() {
+  const {
+    tiles,
+    imageSize,
+    loading,
+    showZip,
+    setFile,
+    sendDemo,
+    generateTiles,
+    downloadZip,
+  } = useTileStore();
+  const { t } = useI18n();
 
   return (
-    <div className="App">
-      <h1>image-to-tile demo</h1>
-      <div className="opt">
-        <input
-          type="file"
-          id="imageInput"
-          accept="image/*"
-          ref={fileRef}
-          onChange={() => {
-            setShowZip(false);
-          }}
-        />
-        <button onClick={toTile} disabled={loading}>
-          to tile images
-        </button>
-        {loading && (
-          <div style={{ width: 120 }}>
-            Generating<span className="dots"></span>
-          </div>
-        )}
-        {showZip && (
-          <button onClick={dowloadZip} style={{ marginLeft: 20 }}>
-            dowload tiles（ZIP）
-          </button>
-        )}
-      </div>
-      <Caption />
-      <MapContainer id="map" crs={L.CRS.Simple} zoom={1} center={[0, 0]}>
-        <CustomTileLayer tiles={tiles}></CustomTileLayer>
-      </MapContainer>
-    </div>
-  );
-};
+    <>
+      <Header />
+      <div className="min-h-screen bg-background p-6">
+        <div className="mx-auto max-w-6xl space-y-6">
+          <Card className="p-4">
+            <CardContent className="p-0">
+              <div className="flex flex-wrap items-center">
+                <div className="flex flex-wrap gap-3 items-center flex-1">
+                  <Input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+                    className="max-w-2xs"
+                  />
+                  <Select onValueChange={sendDemo}>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder={t("select_demo")} />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DEMO_IMAGES.map((img) => (
+                        <SelectItem key={img.url} value={img.url}>
+                          {img.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
 
-export default App;
+                  <Button onClick={generateTiles} disabled={loading}>
+                    {t("generate")}
+                  </Button>
+
+                  {loading && (
+                    <p className="text-sm text-muted-foreground animate-pulse">
+                      {t("generating")}
+                    </p>
+                  )}
+
+                  {!loading && showZip && (
+                    <Button onClick={downloadZip}>{t("download")}</Button>
+                  )}
+                </div>
+
+                <Guide />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="overflow-hidden p-0">
+            <CardContent className="p-0">
+              <div className="h-[600px] w-full">
+                <ImageTileMap tiles={tiles} imageSize={imageSize} />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </>
+  );
+}
