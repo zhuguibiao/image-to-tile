@@ -31,6 +31,7 @@ export default function Guide() {
               <b>{t("guide_title")}</b>：<div>1. {t("guide_d1")}</div>
               <div>2. {t("guide_d2")}</div>
               <div>3. {t("guide_d3")}</div>
+              <div>4. {t("guide_d4")}</div>
             </div>
           </div>
         </PopoverContent>

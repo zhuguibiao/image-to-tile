@@ -5,16 +5,17 @@ import React, { useEffect } from "react";
 
 const GRAY_211x211 =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAAzCAYAAABoQMrKAAAAF0lEQVR42mP8z/CfAQQYGf4zMAAxSgASAAAKRABXHn1DUQAAAABJRU5ErkJggg==";
-type Props = {
-  tiles: Tiles;
-  imageSize: [number, number];
-};
 
 /**
  * Tiles 结构说明：
  * tiles[zoom][x][y] => tileUrl
  */
 export type Tiles = string[][][];
+
+type Props = {
+  tiles: Tiles;
+  imageSize: [number, number];
+};
 
 /**
  * 自定义 TileLayer
@@ -150,15 +151,12 @@ const TilesLayer: React.FC<{
      * 像素坐标转换器
      */
     const rc = new RasterCoords(map, imageSize);
-    // L.control
-    //   .layers(
-    //     {},
+    // L.control.layers({},
     //     {
     //       // Polygon: layerPolygon(map, rc),
     //       // Bounds: layerBounds(map, rc, img),
     //     }
-    //   )
-    //   .addTo(map);
+    //   ).addTo(map);
 
     /**
      * 初始化地图视角（图片中心）
